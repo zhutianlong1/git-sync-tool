@@ -11,18 +11,40 @@
 - 如果目标目录不存在对应的项目，自动执行 `git clone` 克隆仓库。
 - 通过 JSON 格式的配置文件进行项目配置，灵活可扩展。
 
-## 安装
+## 快速开始
 
-### 依赖
-
-- Python 3.x
-- Git
-
-可以使用以下命令安装所需依赖（假设已经安装了 Python 和 Git）：
+1. 克隆本项目或下载源码。
+2. 安装依赖：
+   - Python 3.x（建议 3.6 及以上）
+   - Git
+3. 配置项目仓库列表（见下方配置说明）。
+4. 运行：
 
 ```bash
-pip install subprocess
+python main.py
 ```
+
+## 配置文件说明
+
+项目通过 `projects_config.json` 文件进行配置，示例：
+
+```json
+{
+  "projects": [
+    {
+      "repo_url": "ssh://git@192.168.1.24:222/topbpm/asp.git",
+      "local_directory": "./git/topbpm"
+    },
+    {
+      "repo_url": "ssh://git@192.168.1.24:222/topbpm/examples/cloud-middleware-docker.git",
+      "local_directory": "./git/topbpm/examples"
+    }
+  ]
+}
+```
+
+- `repo_url`：Git 仓库地址，支持 HTTP/HTTPS/SSH。
+- `local_directory`：本地存储目录，支持相对路径和绝对路径。
 
 ## 使用
 
@@ -37,3 +59,18 @@ python main.py
 ```bash
 pyinstaller --onefile --name git_sync_tool main.py
 ```
+
+## 常见问题
+
+- **Q:** 运行时报错找不到 `git` 命令？
+  **A:** 请确保已正确安装 Git，并将其加入系统环境变量。
+- **Q:** 如何添加新仓库？
+  **A:** 在 `projects_config.json` 的 `projects` 数组中添加新的仓库配置即可。
+
+## 贡献
+
+欢迎提交 issue 和 PR 参与改进！
+
+## 许可证
+
+MIT License
