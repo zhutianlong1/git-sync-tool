@@ -2,27 +2,42 @@
 
 ## 项目介绍
 
-这是一个用 Python 编写的 Git 项目同步工具，支持通过配置文件配置多个 Git 仓库，并自动克隆或更新（`git pull`）到指定的本地存储目录。支持使用 HTTP 和 SSH 协议的 Git 仓库。
+这是一个用 Python 编写的 Git 项目批量同步工具，支持通过配置文件配置多个 Git 仓库，并自动克隆或更新（`git pull`）到指定的本地存储目录。支持 HTTP/HTTPS/SSH 协议的 Git 仓库。
+
+## 目录结构
+
+```
+├── LICENSE
+├── main.py                # 主程序，读取配置并同步所有仓库
+├── projects_config.json   # 仓库配置文件，定义要同步的所有项目
+├── README.md              # 项目说明文档
+```
 
 ## 特性
 
 - 支持配置多个 Git 仓库地址，并指定每个仓库的本地存储目录。
-- 如果目标目录已存在对应的项目，自动执行 `git pull` 拉取最新代码。
-- 如果目标目录不存在对应的项目，自动执行 `git clone` 克隆仓库。
+- 已存在项目自动执行 `git pull` 拉取最新代码。
+- 不存在项目自动执行 `git clone` 克隆仓库。
 - 通过 JSON 格式的配置文件进行项目配置，灵活可扩展。
+- 支持相对路径和绝对路径。
+
+## 依赖环境
+
+- Python 3.x（建议 3.6 及以上）
+- Git（需配置到系统环境变量）
 
 ## 快速开始
 
-1. 克隆本项目或下载源码。
-2. 安装依赖：
-   - Python 3.x（建议 3.6 及以上）
-   - Git
-3. 配置项目仓库列表（见下方配置说明）。
-4. 运行：
-
-```bash
-python main.py
-```
+1. 克隆本项目或下载源码：
+   ```bash
+   git clone https://github.com/zhutianlong1/git-sync-tool.git
+   cd git-sync-tool
+   ```
+2. 配置项目仓库列表（见下方配置说明）。
+3. 运行：
+   ```bash
+   python main.py
+   ```
 
 ## 配置文件说明
 
@@ -32,12 +47,20 @@ python main.py
 {
   "projects": [
     {
-      "repo_url": "ssh://git@192.168.1.24:222/topbpm/asp.git",
-      "local_directory": "./git/topbpm"
+      "repo_url": "https://github.com/example-org/example-repo1.git",
+      "local_directory": "./git/example-repo1"
     },
     {
-      "repo_url": "ssh://git@192.168.1.24:222/topbpm/examples/cloud-middleware-docker.git",
-      "local_directory": "./git/topbpm/examples"
+      "repo_url": "https://github.com/example-org/example-repo2.git",
+      "local_directory": "./git/example-repo2"
+    },
+    {
+      "repo_url": "https://github.com/example-org/example-repo3.git",
+      "local_directory": "./git/example-repo3"
+    },
+    {
+      "repo_url": "https://github.com/zhutianlong1/git-sync-tool.git",
+      "local_directory": "./git/git-sync-tool"
     }
   ]
 }
@@ -46,7 +69,7 @@ python main.py
 - `repo_url`：Git 仓库地址，支持 HTTP/HTTPS/SSH。
 - `local_directory`：本地存储目录，支持相对路径和绝对路径。
 
-## 使用
+## 使用说明
 
 ### 源代码运行
 
@@ -54,23 +77,21 @@ python main.py
 python main.py
 ```
 
-### 打包成exe
+### 打包成可执行文件（可选）
+
+需先安装 pyinstaller：
 
 ```bash
+pip install pyinstaller
 pyinstaller --onefile --name git_sync_tool main.py
 ```
 
 ## 常见问题
 
-- **Q:** 运行时报错找不到 `git` 命令？
-  **A:** 请确保已正确安装 Git，并将其加入系统环境变量。
-- **Q:** 如何添加新仓库？
-  **A:** 在 `projects_config.json` 的 `projects` 数组中添加新的仓库配置即可。
-
-## 贡献
-
-欢迎提交 issue 和 PR 参与改进！
+- 请确保本地已安装 Git 并配置到环境变量。
+- 若使用 SSH 协议，请确保已配置好 SSH key。
+- 若遇到权限问题，请检查本地目录权限。
 
 ## 许可证
 
-MIT License
+本项目基于 [MIT License](./LICENSE) 开源。
